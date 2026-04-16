@@ -37,7 +37,9 @@ class AuthService {
             password,
             account_type
         })
-        return user;
+        return {
+            msg:"Register Success"
+        };
     }
 
     static async getProfile(user){
