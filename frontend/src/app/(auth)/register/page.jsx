@@ -7,6 +7,10 @@ import React, { useState } from 'react'
 import { Formik, Form, ErrorMessage, Field } from "formik"
 import * as yup from "yup";
 import { toast } from 'react-toastify';
+import CustomAuthButton from '@/components/reusable/CustomAuthButton';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useMainContext } from '@/context/MainContext';
 
 const RegisterPage = () => {
   const initialValue = {
@@ -23,16 +27,25 @@ const RegisterPage = () => {
     account_type: yup.string().oneOf(["saving", "current"], "Account should be a valid Saving or Current Account").required("Account type is required")
   })
   const [showPassword, setShowPassword] = useState(false)
+  const [loading,setLoading] = useState(false)
+  const navigate = useRouter()
+  const {fetchUserProfile} = useMainContext()
 
   const onSubmitHandler = async (values, helpers) => {
     try {
+      setLoading(true)
       const response = await axiosClient.post('/auth/register', values);
-      const data = await response.data
+      const {data} = response
+      navigate.push("/login")
       toast.success(data.msg);
-      helpers.resetForm()
+      localStorage.setItem("token",data.token)
+      fetchUserProfile()
     } catch (error) {
       console.log(error)
       toast.error(error.response.data.msg || error.message)
+    }finally{
+      helpers.resetForm()
+      setLoading(false)
     }
   }
   return (
@@ -82,7 +95,11 @@ const RegisterPage = () => {
                   <ErrorMessage name='account_type' className='text-red-500 text-sm' component={'p'} />
                 </div>
                 <div className='mb-3 '>
-                  <Button className="w-full text-md bg-blue-500 text-white hover:bg-blue-400 py-6 cursor-pointer">Register</Button>
+                  <CustomAuthButton text={"Register"} isLoading={loading} type="submit" />
+                </div>
+                <div className='mb-3'>
+                  <p className='text-center'>Already have an account? <Link href={"/login"} 
+                  className='text-blue-800'>Login</Link></p>
                 </div>
               </Form>
             </Formik>

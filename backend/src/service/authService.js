@@ -37,13 +37,14 @@ class AuthService {
             password,
             account_type
         })
+        const token = JWTService.generateToken(user._id)
         return {
-            msg:"Register Success"
+            msg:"Register Success",
+            token: token
         };
     }
 
     static async getProfile(user){
-        console.log(user)
         const userProfile = await UserModel.findById(user).select("-password -_id")
         if(!userProfile){
             throw new ApiError(401,"Profile, Not Found")

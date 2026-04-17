@@ -30,8 +30,9 @@ export default function RootLayout({ children }) {
         className={`${PoppinsFont.className}`}
         suppressHydrationWarning
       >
-        <MainLayout />
+        <MainLayout>
         {children}
+        </MainLayout>
       </body>
     </html>
   );
