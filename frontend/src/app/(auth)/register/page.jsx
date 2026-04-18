@@ -36,10 +36,10 @@ const RegisterPage = () => {
       setLoading(true)
       const response = await axiosClient.post('/auth/register', values);
       const {data} = response
-      navigate.push("/login")
       toast.success(data.msg);
       localStorage.setItem("token",data.token)
       fetchUserProfile()
+      navigate.push("/")
     } catch (error) {
       console.log(error)
       toast.error(error.response.data.msg || error.message)

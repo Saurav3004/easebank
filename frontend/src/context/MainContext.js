@@ -2,16 +2,18 @@
 
 import Loader from "@/components/Loader";
 import { axiosClient } from "@/utils/AxiosClient";
+import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const mainContext = createContext({user:{},fetchUserProfile(){}});
+const mainContext = createContext({user:{},fetchUserProfile(){},logoutHandler(){}});
 
 export const useMainContext = () => useContext(mainContext);
 
 export const MainContextProvider = ({children}) => {
     const [user,setUser] = useState(null);
     const [loading,setLoading] = useState(true)
+    const router = useRouter()
 
     const fetchUserProfile = async () => {
         try {
@@ -23,7 +25,6 @@ export const MainContextProvider = ({children}) => {
                 }
             })
             const data = await res.data;
-            console.log(data)
             setUser(data)
             
         } catch (error) {
@@ -31,6 +32,13 @@ export const MainContextProvider = ({children}) => {
         }finally{
         setLoading(false)
         }
+    }
+
+    const logoutHandler = () => {
+        setUser(null)
+        localStorage.removeItem("token")
+        router.push("/login")
+        toast.success("Logout Successfully")
     }
 
     useEffect(() => {
@@ -45,7 +53,7 @@ export const MainContextProvider = ({children}) => {
         )
     }
 
-    return <mainContext.Provider value={{user,fetchUserProfile}}>
+    return <mainContext.Provider value={{user,fetchUserProfile,logoutHandler}}>
         {children}
     </mainContext.Provider>
 }

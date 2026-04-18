@@ -1,8 +1,7 @@
 "use client"
 
-import { Button } from '@/components/ui/button';
 import { axiosClient } from '@/utils/AxiosClient';
-import { Eye, EyeClosed, EyeIcon } from 'lucide-react';
+import { Eye, EyeClosed } from 'lucide-react';
 import React, { useState } from 'react'
 import { Formik, Form, ErrorMessage, Field } from "formik"
 import * as yup from "yup";
@@ -14,13 +13,16 @@ import { useMainContext } from '@/context/MainContext';
 
 const LoginPage = () => {
   const {fetchUserProfile} = useMainContext()
+  const [loading,setLoading] = useState(false)
+  const navigate = useRouter()
+  
+  
   const initialValue = {
     
     email: '',
     password: '',
   }
 
-  const navigate = useRouter()
 
   const validationSchema = yup.object({
     
@@ -29,7 +31,7 @@ const LoginPage = () => {
     
   })
   const [showPassword, setShowPassword] = useState(false)
-  const [loading,setLoading] = useState(false)
+  
   
 
   const onSubmitHandler = async (values, helpers) => {
@@ -40,6 +42,7 @@ const LoginPage = () => {
       toast.success(data.msg);
       localStorage.setItem("token",data.token)
       fetchUserProfile()
+      navigate.push("/")
       
     } catch (error) {
       console.log(error)
