@@ -1,0 +1,1 @@
+export const checkoutUrl = "https://checkout.razorpay.com/v1/checkout.js"

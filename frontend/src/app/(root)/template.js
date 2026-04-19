@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { BiHome } from 'react-icons/bi'
 import { FaUser } from 'react-icons/fa'
+import { GrCurrency } from 'react-icons/gr'
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -54,9 +55,11 @@ const RootTemplate = ({ children }) => {
     <>
       <section className='flex items-start'>
         <Sidebar breakPoint='lg' toggled={isToggle} onBackdropClick={() => dispatch(setIsToggle())}>
-          <Menu className='bg-white! min-h-screen! lg:min-h-[90vh]!'>
+          <Menu className='bg-white! min-h-screen! lg:min-h-[90vh]! py-10 px-3'>
             
             <CustomMenu link={'/'} text={"Home"} Icon={<BiHome size={15}  />} />
+            <CustomMenu link={'/amount'} text={"Amount"} Icon={<GrCurrency size={15} />} />
+            <CustomMenu link={'/profile'} text={"Profile"} Icon={<FaUser size={15} />} />
             <CustomMenu link={'/profile'} text={"Profile"} Icon={<FaUser size={15} />} />
             
           </Menu>

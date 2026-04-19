@@ -22,13 +22,13 @@ const Navbar = () => {
                 </div>
                 <ul className="flex items-center justify-center gap-x-10">
                     <li>
-                        <Link href={"/"}>Home</Link>
+                        <Link href={"/"} className='hover:text-blue-500 hover:underline'>Home</Link>
                     </li>
                     <li>
-                        <Link href={"/services"}>Services</Link>
+                        <Link href={"/services"} className='hover:text-blue-500 hover:underline'>Services</Link>
                     </li>
                     <li>
-                        <Link href={"/about"}>About</Link>
+                        <Link href={"/about"} className='hover:text-blue-500 hover:underline'>About</Link>
                     </li>
                     <li>
                         {
