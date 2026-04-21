@@ -29,10 +29,14 @@ const transactionSchema = new mongoose.Schema({
     razorpaySignature:{
         type:String,
         default:""
+    },
+    remark:{
+        type:String,
+        default:""
     }
 },{
     timestamps:true
 });
 
-const Transaction = mongoose.model("Transaction",transactionSchema);
-module.exports = Transaction;
+const model = mongoose.model("Transaction",transactionSchema);
+exports.TransactionModel = model;

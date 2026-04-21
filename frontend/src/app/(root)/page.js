@@ -1,15 +1,19 @@
+"use client"
+
 import HeaderName from "@/components/reusable/HeaderName";
+import { useMainContext } from "@/context/MainContext";
 import Link from "next/link";
 import { BsCoin } from "react-icons/bs";
 import { IoCardSharp } from "react-icons/io5";
 import { RiCoinLine } from "react-icons/ri";
 
 const HomePage = () => {
+  const {user} = useMainContext()
   const dashboard_data = [
     {
       title:"Amount",
       "Icon":BsCoin,
-      "value": `₹${0}`,
+      "value": `₹${user.amount}`,
       "className": "text-4xl text-yellow-600",
       link: "/amount"
     },

@@ -13,7 +13,7 @@ import { SiRazorpay } from 'react-icons/si'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 
-export default function AddAmountModal() {
+export default function AddAmountModal({id}) {
   const [isOpen, setIsOpen] = useState(false)
   const [loading,setLoading] = useState(false)
   const {user} = useMainContext()
