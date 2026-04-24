@@ -3,7 +3,13 @@ const mongoose = require("mongoose");
 const transactionSchema = new mongoose.Schema({
     account:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:"Account"
+        ref:"Account",
+        required:true
+    },
+    user:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required:true
     },
     amount:{
         type:Number,

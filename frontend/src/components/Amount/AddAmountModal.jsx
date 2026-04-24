@@ -1,7 +1,8 @@
 "use client"
 
 import { useMainContext } from '@/context/MainContext'
-import { checkoutUrl } from '@/utils/constant'
+import { axiosClient } from '@/utils/AxiosClient'
+import { checkoutUrl, razorpayCallbackUrl } from '@/utils/constant'
 import { loadScripts } from '@/utils/loadScripts'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { Field, Form, Formik } from 'formik'
@@ -18,7 +19,8 @@ export default function AddAmountModal({id}) {
   const [loading,setLoading] = useState(false)
   const {user} = useMainContext()
   const initialState = {
-    amount:0
+    amount:0,
+    account_no:id
   }
   const validationSchema = yup.object({
     amount:yup.number().min(1,"Enter Minimum Amount 1 INR").required("Amount is required")
@@ -28,25 +30,27 @@ export default function AddAmountModal({id}) {
     try {
       setLoading(true)
       
-      const res = await loadScripts(checkoutUrl);
-      console.log(res)
-      console.log(window.Razorpay);
+      await loadScripts(checkoutUrl);
+
+      const response = await axiosClient.post("/amount/add-money",values,{
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+      const data = response.data;
       
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_TEST_KEY,
         amount: (values.amount * 100).toString(),
         currency: "INR",
-        name: user.name,
-        description: "Transaction",
+        name: "EASEBANK",
+        description: "Add Money Transaction",
+        callback_url: razorpayCallbackUrl(data.txn_id),
         // image: {logo},
-        order_id: "order_id",
-        handler: async function (response){
-          console.log("response ",response);
-          
-        },
+        order_id: data.order_id,
         prefill:{
-          name: user.name,
-          email:user.email,
+          name: "EASEBANK",
+          email:"info@easebank.com",
           contact: user?.contact ? String(user.contact) : "",
         },
         notes:{

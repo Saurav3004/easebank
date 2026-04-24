@@ -5,4 +5,4 @@ const razorpay = new Razorpay({
     key_secret:process.env.RAZORPAY_TEST_SECRET
 });
 
-module.exports = razorpay;
+exports.NewRazorpay = razorpay;
